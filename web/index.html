@@ -1,0 +1,147 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <!--
+      If you are serving your web app in a path other than the root, change the
+      href value below to reflect the base path you are serving from.
+
+      The path provided below has to start and end with a slash "/" in order for
+      it to work correctly.
+
+      For more details:
+      * https://developer.mozilla.org/en-US/docs/Web/HTML/Element/base
+
+      This is a placeholder for base href that will be replaced by the value of
+      the `--base-href` argument provided to `flutter build`.
+    -->
+    <base href="$FLUTTER_BASE_HREF">
+
+    <meta charset="UTF-8">
+    <meta content="IE=Edge" http-equiv="X-UA-Compatible">
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <meta name="theme-color" content="#03A9F4">
+    <meta name="description"
+          content="شرکت نرم افزاری صالتک، با بیش از 10 سال سابقه کاری در تولید و انتشار نرم افزار هایی بروز و کارآمد، در خدمت شماست.">
+    <!-- iOS meta tags & icons -->
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="#03A9F4">
+    <meta name="apple-mobile-web-app-title" content="SalTech">
+    <link rel="apple-touch-icon" href="icons/Icon-192.png">
+
+    <!-- Favicon -->
+    <link rel="icon" type="image/png" href="favicon.png"/>
+
+    <title>صالتک • در حال راه اندازی</title>
+    <link rel="manifest" type="application/json" href="manifest.json">
+
+    <script type="application/javascript">
+        // flutter build injects the value below, do not touch.
+        var serviceWorkerVersion = null;
+    </script>
+    <!-- This script adds the flutter initialization JS code -->
+    <link rel="stylesheet" type="text/css" href="css/bootstrap.min.css">
+    <link rel="stylesheet" type="text/css" href="css/main.stylesheet.css">
+    <link rel="stylesheet" type="text/css" href="css/material-symbols.outlined.css">
+    <script type="application/javascript" src="js/lottie-player.js" defer></script>
+    <script type="application/javascript" src="js/bootstrap.min.js" defer></script>
+    <script type="application/javascript" src="js/bootstrap.bundle.min.js" defer></script>
+    <script type="application/javascript" src="flutter.js" defer></script>
+</head>
+<body>
+<div>
+    <lottie-player src="json/background.json" background="transparent" speed="0.7" class="main-bg"
+                   autoplay loop>
+    </lottie-player>
+    <div class="loading-container">
+        <center>
+            <div class="loading-layout">
+                <center>
+                    <lottie-player src="json/loading.json" background="transparent"
+                                   class="loading-ring"
+                                   autoplay loop>
+                    </lottie-player>
+                    <h6 class="h6 loading-text">در حال بارگذاری...</h6>
+                </center>
+            </div>
+        </center>
+    </div>
+    <button type="button" class="langBtn">English</button>
+</div>
+<script type="application/javascript">
+    var lang = "fa_IR";
+    window.state = {
+      "lang": lang
+    }
+    window.addEventListener('load', function(ev) {
+      var loadingLayout = document.querySelector('.loading-layout');
+      var langButton = document.querySelector('.langBtn');
+      setTimeout(function() {
+        loadingLayout.style.display = "block";
+        langButton.style.display = "block";
+      }, 125);
+      var loading = document.querySelector('.loading-text');
+      langButton.addEventListener("click", function(e) {
+          if (lang === "fa_IR") {
+              langButton.innerHTML = "فـــــــارسی";
+              lang = "en_US";
+              document.title = "SalTech • Launching";
+              loading.style.direction = "ltr";
+              if (loading.innerText === "در حال بارگذاری...") {
+              loading.innerText = "Loading...";
+              }
+              if (loading.innerText === "در حال آماده‌سازی...") {
+              loading.innerText = "Preparing...";
+              }
+              if (loading.innerText === "تقریباً آماده است!") {
+              loading.innerText = "Almost There!";
+              }
+          } else {
+              langButton.innerHTML = "English";
+              lang = "fa_IR";
+              document.title = "صالتک • در حال راه اندازی";
+              loading.style.direction = "rtl";
+              if (loading.innerText === "Loading...") {
+              loading.innerText = "در حال بارگذاری...";
+              }
+              if (loading.innerText === "Preparing...") {
+              loading.innerText = "در حال آماده‌سازی...";
+              }
+              if (loading.innerText === "Almost There!") {
+              loading.innerText = "تقریباً آماده است!";
+              }
+          }
+          window.state = {
+              "lang": lang
+          }
+      });
+
+      if (lang === "fa_IR") {
+      loading.innerText="در حال بارگذاری...";
+      } else {
+          loading.innerText="Loading...";
+      }
+      _flutter.loader.loadEntrypoint({
+        serviceWorker: {
+          serviceWorkerVersion: serviceWorkerVersion,
+        },
+        onEntrypointLoaded: async function(engineInitializer) {
+        if (lang === "fa_IR") {
+      loading.innerText="در حال آماده‌سازی...";
+        } else {
+          loading.innerText="Preparing...";
+        }
+        let appRunner = await engineInitializer.initializeEngine();
+
+        if (lang === "fa_IR") {
+      loading.innerText="تقریباً تمام است!";
+        } else {
+          loading.innerText="Almost There!";
+        }
+          await appRunner.runApp();
+        }
+      });
+    });
+</script>
+</body>
+</html>

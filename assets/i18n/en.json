@@ -1,0 +1,13 @@
+{
+  "title": {
+	"name": "SalTech • Home"
+  },
+  "navigation": {
+	"home": "Home",
+	"products": "Products",
+	"blog": "Blog"
+  },
+  "body": {
+	"demo": "We're making everything possible. 🦾"
+  }
+}

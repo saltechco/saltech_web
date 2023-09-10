@@ -220,16 +220,17 @@ class _DesktopEditionState extends State<DesktopEdition> {
                 ),
                 child: Column(
                   children: [
-                    Expanded(child: buildBody(context)
-                        // child: Center(
-                        //   child: MaterialText(
-                        //     "body.demo",
-                        //     textStyle: theme.textTheme.displayMedium,
-                        //     fontWeight: FontWeight.w900,
-                        //     textColor: theme.colorScheme.primary,
-                        //   ),
-                        // ),
-                        ),
+                    Expanded(
+                      child: buildBody(context),
+                      // child: Center(
+                      //   child: MaterialText(
+                      //     "body.demo",
+                      //     textStyle: theme.textTheme.displayMedium,
+                      //     fontWeight: FontWeight.w900,
+                      //     textColor: theme.colorScheme.primary,
+                      //   ),
+                      // ),
+                    ),
                   ],
                 ),
               ),
@@ -246,16 +247,29 @@ class _DesktopEditionState extends State<DesktopEdition> {
     return FutureBuilder<Comments>(
       future: client.getComments("3b8b3581b1e0", Product(id: 9342)),
       builder: (context, snapshot) {
-        print("error: ${snapshot.error.toString()}");
         if (snapshot.connectionState == ConnectionState.done) {
-          final Comments posts = snapshot.data!;
-          print("comments: $posts");
-          return Text("Wating....");
-        } else {
-          print("Network Error!@!!");
-          return Center(
-            child: CircularProgressIndicator(),
+          final Comments comments = snapshot.data!;
+          return ListView(
+            children: [
+              for (final comment in comments.results!)
+                Padding(
+                  padding: const EdgeInsets.all(16.0),
+                  child: ListTile(
+                    title: Text(
+                      """{
+                            "id": ${comment.id},
+                            "likes": ${comment.likes},
+                            "dislikes": ${comment.dislikes},
+                            "text": ${comment.text},
+                            "rank": ${comment.rate},
+                      }""",
+                    ),
+                  ),
+                )
+            ],
           );
+        } else {
+          return Center(child: CircularProgressIndicator());
         }
       },
     );
@@ -284,11 +298,9 @@ class _DesktopEditionState extends State<DesktopEdition> {
     );
   }
 
-  BorderRadius getContainerEdgeRadius() {
-    return appDirection == TextDirection.ltr
-        ? BorderRadius.only(topLeft: Radius.circular(8))
-        : BorderRadius.only(topRight: Radius.circular(8));
-  }
+  BorderRadius getContainerEdgeRadius() => appDirection == TextDirection.ltr
+      ? BorderRadius.only(topLeft: Radius.circular(8))
+      : BorderRadius.only(topRight: Radius.circular(8));
 }
 
 class TabletEdition extends StatefulWidget {
@@ -407,31 +419,27 @@ class _MobileEditionState extends State<MobileEdition> {
                 theme, Symbols.storefront_rounded, _DESTINATION_PRODUCTS),
             getNavDestination(
                 theme, Symbols.history_edu_rounded, _DESTINATION_BLOG),
-            Expanded(
-                child: Align(
-              heightFactor: 1.5,
-              alignment: FractionalOffset.bottomCenter,
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  SizedBox(width: 8),
-                  AnimatedIconButton(
-                    size: 24,
-                    onPressed: () {
-                      setState(() {
-                        appState.changeLang(context);
-                      });
-                    },
-                    duration: const Duration(milliseconds: 1),
-                    icons: [
-                      AnimatedIconItem(icon: Icon(Symbols.language_rounded)),
-                    ],
-                  ),
-                  ThemeButton(),
-                  SizedBox(width: 8),
-                ],
-              ),
-            )),
+            SizedBox(height: 16),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                SizedBox(width: 8),
+                AnimatedIconButton(
+                  size: 24,
+                  onPressed: () {
+                    setState(() {
+                      appState.changeLang(context);
+                    });
+                  },
+                  duration: const Duration(milliseconds: 1),
+                  icons: [
+                    AnimatedIconItem(icon: Icon(Symbols.language_rounded)),
+                  ],
+                ),
+                ThemeButton(),
+                SizedBox(width: 8),
+              ],
+            ),
           ],
         ),
       ),

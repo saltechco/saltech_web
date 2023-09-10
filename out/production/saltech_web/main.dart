@@ -8,15 +8,14 @@ import 'package:flutter/services.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:flutter_translate/flutter_translate.dart';
-import 'package:logger/logger.dart';
 import 'package:material_symbols_icons/symbols.dart';
 import 'package:provider/provider.dart';
-import 'package:saltech_web/models/Package.dart';
 
 import '/api/comment.dart';
 import '/generated/fonts.dart';
 import '/generated/logo.dart';
 import 'models/Comments.dart';
+import 'models/Product.dart';
 
 enum AppTheme { light, dark }
 
@@ -42,40 +41,12 @@ void init() {
   currentNavIndex = 0;
 }
 
-final logger = Logger();
 void main(List<String> args) async {
-  // var headers = {
-  //   'Developer-Id': '3b8b3581b1e0',
-  //   'Content-Type': 'application/json'
-  // };
-  // var data = json.encode({"product_id": 9342});
-  // var dio = Dio();
-  // var response = await dio.request(
-  //   'https://saltech.ir/api/product/cafebazaar/comments/query',
-  //   options: Options(
-  //     method: 'POST',
-  //     headers: headers,
-  //   ),
-  //   data: data,
-  // );
-  //
-  // if (response.statusCode == 200) {
-  //   print(json.encode(response.data));
-  // } else {
-  //   print(response.statusMessage);
-  // }
   init();
   var delegate = await LocalizationDelegate.create(
       fallbackLocale: 'en_US', supportedLocales: ['en_US', 'fa_IR']);
   runApp(LocalizedApp(delegate, MyApp()));
 }
-
-// void main() async {
-//   init();
-//   var delegate = await LocalizationDelegate.create(
-//       fallbackLocale: 'en_US', supportedLocales: ['en_US', 'fa_IR']);
-//   runApp(LocalizedApp(delegate, MyApp()));
-// }
 
 class MyApp extends StatelessWidget {
   const MyApp({super.key});
@@ -249,16 +220,17 @@ class _DesktopEditionState extends State<DesktopEdition> {
                 ),
                 child: Column(
                   children: [
-                    Expanded(child: buildBody(context)
-                        // child: Center(
-                        //   child: MaterialText(
-                        //     "body.demo",
-                        //     textStyle: theme.textTheme.displayMedium,
-                        //     fontWeight: FontWeight.w900,
-                        //     textColor: theme.colorScheme.primary,
-                        //   ),
-                        // ),
-                        ),
+                    Expanded(
+                      child: buildBody(context),
+                      // child: Center(
+                      //   child: MaterialText(
+                      //     "body.demo",
+                      //     textStyle: theme.textTheme.displayMedium,
+                      //     fontWeight: FontWeight.w900,
+                      //     textColor: theme.colorScheme.primary,
+                      //   ),
+                      // ),
+                    ),
                   ],
                 ),
               ),
@@ -275,16 +247,19 @@ class _DesktopEditionState extends State<DesktopEdition> {
     return FutureBuilder<Comments>(
       future: client.getComments("3b8b3581b1e0", Product(id: 9342)),
       builder: (context, snapshot) {
-        print("error: ${snapshot.error.toString()}");
         if (snapshot.connectionState == ConnectionState.done) {
-          final Comments posts = snapshot.data!;
-          print("comments: $posts");
-          return Text("Wating....");
-        } else {
-          print("Network Error!@!!");
-          return Center(
-            child: CircularProgressIndicator(),
+          final Comments comments = snapshot.data!;
+          return ListView(
+            children: comments.results!.map((e) => Text("""{
+              "id": ${e.id},
+              "likes": ${e.likes},
+              "dislikes": ${e.dislikes},
+              "text": ${e.text},
+              "rank": ${e.rank},
+            }""")) as List<Widget>,
           );
+        } else {
+          return Center(child: CircularProgressIndicator());
         }
       },
     );
@@ -313,11 +288,9 @@ class _DesktopEditionState extends State<DesktopEdition> {
     );
   }
 
-  BorderRadius getContainerEdgeRadius() {
-    return appDirection == TextDirection.ltr
-        ? BorderRadius.only(topLeft: Radius.circular(8))
-        : BorderRadius.only(topRight: Radius.circular(8));
-  }
+  BorderRadius getContainerEdgeRadius() => appDirection == TextDirection.ltr
+      ? BorderRadius.only(topLeft: Radius.circular(8))
+      : BorderRadius.only(topRight: Radius.circular(8));
 }
 
 class TabletEdition extends StatefulWidget {
@@ -436,31 +409,27 @@ class _MobileEditionState extends State<MobileEdition> {
                 theme, Symbols.storefront_rounded, _DESTINATION_PRODUCTS),
             getNavDestination(
                 theme, Symbols.history_edu_rounded, _DESTINATION_BLOG),
-            Expanded(
-                child: Align(
-              heightFactor: 1.5,
-              alignment: FractionalOffset.bottomCenter,
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  SizedBox(width: 8),
-                  AnimatedIconButton(
-                    size: 24,
-                    onPressed: () {
-                      setState(() {
-                        appState.changeLang(context);
-                      });
-                    },
-                    duration: const Duration(milliseconds: 1),
-                    icons: [
-                      AnimatedIconItem(icon: Icon(Symbols.language_rounded)),
-                    ],
-                  ),
-                  ThemeButton(),
-                  SizedBox(width: 8),
-                ],
-              ),
-            )),
+            SizedBox(height: 16),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                SizedBox(width: 8),
+                AnimatedIconButton(
+                  size: 24,
+                  onPressed: () {
+                    setState(() {
+                      appState.changeLang(context);
+                    });
+                  },
+                  duration: const Duration(milliseconds: 1),
+                  icons: [
+                    AnimatedIconItem(icon: Icon(Symbols.language_rounded)),
+                  ],
+                ),
+                ThemeButton(),
+                SizedBox(width: 8),
+              ],
+            ),
           ],
         ),
       ),

@@ -1,8 +1,8 @@
-import 'dart:convert';
-
 import 'package:json_annotation/json_annotation.dart' show JsonSerializable;
 
 import "Comment.dart";
+
+part "Comments.g.dart";
 
 @JsonSerializable()
 class Comments {
@@ -12,14 +12,7 @@ class Comments {
 
   Comments({this.next, this.previous, this.results});
 
-  factory Comments.fromJson(Map<String, dynamic> json) => Comments(
-      next: json["next"], previous: json["previous"], results: json["results"]);
-  Map<String, dynamic> toJson() =>
-      {"next": next, "previous": previous, "results": results};
+  factory Comments.fromJson(Map<String, dynamic> json) =>
+      _$CommentsFromJson(json);
+  Map<String, dynamic> toJson() => _$CommentsToJson(this);
 }
-
-List<Comments> commentsFromJson(String str) =>
-    List<Comments>.from(json.decode(str).map((x) => Comments.fromJson(x)));
-
-String commentsToJson(List<Comments> data) =>
-    json.encode(List<dynamic>.from(data.map((x) => x.toJson())));

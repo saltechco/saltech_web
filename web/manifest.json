@@ -1,13 +1,13 @@
 {
   "name": "صالتک • تولید کننده اپلیکیشن های کاربردی",
-  "short_name": "صالتک • SalTech",
-  "start_url": "saltech.space",
+  "short_name": "صالتک",
+  "start_url": ".",
   "display": "standalone",
-  "background_color": "#03A9F4",
+  "background_color": "#00344D",
   "theme_color": "#03A9F4",
   "description": "شرکت نرم افزاری صالتک، با بیش از 10 سال سابقه کاری در تولید و انتشار نرم افزار هایی بروز و کارآمد، در خدمت شماست.",
   "orientation": "portrait-primary",
-  "prefer_related_applications": true,
+  "prefer_related_applications": false,
   "icons": [
 	{
 	  "src": "icons/Icon-192.png",

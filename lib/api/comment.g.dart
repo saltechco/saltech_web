@@ -13,7 +13,7 @@ class _CommentsApi implements CommentsApi {
     this._dio, {
     this.baseUrl,
   }) {
-    baseUrl ??= 'https://saltech.ir/api/product/cafebazaar';
+    baseUrl ??= 'https://saltech.space/api/product/cafebazaar';
   }
 
   final Dio _dio;

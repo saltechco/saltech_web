@@ -3,6 +3,7 @@ import 'dart:js' as js;
 
 import 'package:animated_icon_button/animated_icon_button.dart';
 import 'package:dio/dio.dart';
+import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
@@ -15,6 +16,7 @@ import 'package:provider/provider.dart';
 import '/api/comment.dart';
 import '/generated/fonts.dart';
 import '/generated/logo.dart';
+import 'firebase_options.dart';
 import 'models/Comments.dart';
 import 'models/Product.dart';
 
@@ -43,6 +45,9 @@ void init() {
 }
 
 void main(List<String> args) async {
+  await Firebase.initializeApp(
+    options: DefaultFirebaseOptions.currentPlatform,
+  );
   usePathUrlStrategy();
   init();
   var delegate = await LocalizationDelegate.create(

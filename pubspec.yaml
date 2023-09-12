@@ -23,6 +23,7 @@ dependencies:
   built_value: ^8.6.2
   json_annotation: ^4.8.1
   url_launcher: ^6.1.14
+  firebase_core: ^2.15.1
 
 dev_dependencies:
   flutter_test:

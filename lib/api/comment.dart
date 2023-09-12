@@ -6,7 +6,7 @@ import '../models/Product.dart';
 
 part 'comment.g.dart';
 
-@RestApi(baseUrl: "https://saltech.space/api/product/cafebazaar")
+@RestApi(baseUrl: "https://saltech.ir/api/product/cafebazaar")
 abstract class CommentsApi {
   factory CommentsApi(Dio dio, {String baseUrl}) = _CommentsApi;
 

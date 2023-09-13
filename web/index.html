@@ -1,20 +1,7 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <!--
-      If you are serving your web app in a path other than the root, change the
-      href value below to reflect the base path you are serving from.
-
-      The path provided below has to start and end with a slash "/" in order for
-      it to work correctly.
-
-      For more details:
-      * https://developer.mozilla.org/en-US/docs/Web/HTML/Element/base
-
-      This is a placeholder for base href that will be replaced by the value of
-      the `--base-href` argument provided to `flutter build`.
-    -->
-    <base href="$FLUTTER_BASE_HREF">
+    <base href="/">
 
     <meta charset="UTF-8">
     <meta content="IE=Edge" http-equiv="X-UA-Compatible">
@@ -66,7 +53,7 @@
     <link rel="stylesheet" type="text/css" href="css/bootstrap.min.css">
     <link rel="stylesheet" type="text/css" href="css/main.stylesheet.css">
     <script type="application/javascript" src="js/bootstrap.min.js" defer></script>
-    <script type="application/javascript" src="js/lottie-player.js" defer></script>
+    <script type="application/javascript" src="js/lottie-player.js"></script>
     <script type="application/javascript" src="flutter.js" defer></script>
 </head>
 <body>
@@ -82,12 +69,12 @@
                                    class="loading-ring"
                                    autoplay loop>
                     </lottie-player>
-                    <h6 class="h6 loading-text">در حال بارگذاری...</h6>
+                    <h6 class="h6 loading-text"></h6>
                 </center>
             </div>
         </center>
     </div>
-    <button type="button" class="langBtn">English</button>
+    <button type="button" class="langBtn"></button>
 </div>
 <script type="module">
     // Import the functions you need from the SDKs you need
@@ -113,18 +100,25 @@
     const analytics = getAnalytics(app);
 </script>
 <script type="application/javascript">
-    var lang = "fa_IR";
+    let lang = "fa_IR";
+    let loadingLayout = document.querySelector('.loading-layout');
+    let loadingBg = document.querySelector('.main-bg');
+    let langButton = document.querySelector('.langBtn');
+    let loading = document.querySelector('.loading-text');
     window.state = {
       "lang": lang
     }
     window.addEventListener('load', function(ev) {
-      var loadingLayout = document.querySelector('.loading-layout');
-      var langButton = document.querySelector('.langBtn');
-      setTimeout(function() {
-        loadingLayout.style.display = "block";
-        langButton.style.display = "block";
-      }, 125);
-      var loading = document.querySelector('.loading-text');
+      if (window.location.pathname === "/") {
+        loadingBg.style.display = "block";
+        setTimeout(function() {
+          loadingLayout.style.display = "block";
+          langButton.style.display = "block";
+        }, 125);
+      } else {
+        hideLayout();
+      }
+      langButton.innerHTML = "English";
       langButton.addEventListener("click", function(e) {
           if (lang === "fa_IR") {
               langButton.innerHTML = "فـــــــارسی";
@@ -183,9 +177,18 @@
           loading.innerText="Almost There!";
         }
           await appRunner.runApp();
+          setTimeout(function() {
+            hideLayout();
+          }, 3000);
         }
       });
     });
+
+    function hideLayout() {
+        loadingBg.style.display = "none";
+        loadingLayout.style.display = "none";
+        langButton.style.display = "none";
+    }
 </script>
 </body>
 </html>

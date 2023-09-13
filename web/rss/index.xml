@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<rss>
+    <channel>
+        <title>اخبار صالتک</title>
+        <link>https://saltech.ir</link>
+        <description>از محصولات و خدمات جدید ما آگاه شوید!</description>
+        <item>
+            <title>My First Post</title>
+            <link>https://www.mywebsite.com/post/my-first-post</link>
+            <description>This is my first post.</description>
+            <pubDate>2023-09-13T10:25:33+00:00</pubDate>
+        </item>
+    </channel>
+</rss>

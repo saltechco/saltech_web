@@ -45,11 +45,11 @@ void init() {
 }
 
 void main(List<String> args) async {
+  usePathUrlStrategy();
+  init();
   await Firebase.initializeApp(
     options: DefaultFirebaseOptions.currentPlatform,
   );
-  usePathUrlStrategy();
-  init();
   var delegate = await LocalizationDelegate.create(
       fallbackLocale: 'en_US', supportedLocales: ['en_US', 'fa_IR']);
   runApp(LocalizedApp(delegate, MyApp()));
@@ -80,6 +80,7 @@ class MyApp extends StatelessWidget {
           stream: lightThemeControl.stream,
           builder: (context, snapshot) {
             return MaterialApp(
+              routes: getRoutes(),
               title: translate("title.name"),
               theme: snapshot.data == true ? lightTheme : darkTheme,
               debugShowCheckedModeBanner: false,
@@ -98,6 +99,12 @@ class MyApp extends StatelessWidget {
       ),
     );
   }
+}
+
+Map<String, Widget Function(BuildContext)> getRoutes() {
+  return {
+    '/products': (context) => Text("data"),
+  };
 }
 
 class AppState extends ChangeNotifier {
@@ -216,6 +223,9 @@ class _DesktopEditionState extends State<DesktopEdition> {
               onDestinationSelected: (int index) {
                 setState(() {
                   currentNavIndex = index;
+                  if (index == 2) {
+                    Navigator.pushNamed(context, "/products");
+                  }
                 });
               },
             ),
@@ -228,15 +238,14 @@ class _DesktopEditionState extends State<DesktopEdition> {
                 child: Column(
                   children: [
                     Expanded(
-                      child: buildBody(context),
-                      // child: Center(
-                      //   child: MaterialText(
-                      //     "body.demo",
-                      //     textStyle: theme.textTheme.displayMedium,
-                      //     fontWeight: FontWeight.w900,
-                      //     textColor: theme.colorScheme.primary,
-                      //   ),
-                      // ),
+                      child: Center(
+                        child: MaterialText(
+                          "body.demo",
+                          textStyle: theme.textTheme.displayMedium,
+                          fontWeight: FontWeight.w900,
+                          textColor: theme.colorScheme.primary,
+                        ),
+                      ),
                     ),
                   ],
                 ),

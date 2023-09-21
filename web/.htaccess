@@ -1,0 +1,17 @@
+Options FollowSymLinks Includes
+
+AddType text/html .htm
+AddType text/css .css
+AddType application/x-javascript .js
+AddHandler server-parsed .htm
+AddOutputFilter INCLUDES .htm
+
+RewriteEngine on
+RewriteCond %{REQUEST_FILENAME} !-f
+RewriteCond %{REQUEST_FILENAME} !-d
+RewriteCond %{REQUEST_FILENAME}\.php -f
+RewriteRule ^(.*)$ $1.php [NC,L]
+RewriteRule ^.*\.css$ - [env=headercss:1]
+
+Header set Content-type application/javascript env=headerjs
+Header set Content-type text/css env=headercss

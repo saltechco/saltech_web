@@ -193,6 +193,14 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "5.3.2"
+  dynamic_color:
+    dependency: "direct main"
+    description:
+      name: dynamic_color
+      sha256: "96bff3df72e3d428bda2b874c7a521e8c86f592cae626ea594922fcc8d166e0c"
+      url: "https://pub.dev"
+    source: hosted
+    version: "1.6.7"
   english_words:
     dependency: "direct main"
     description:
@@ -217,30 +225,6 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "7.0.0"
-  firebase_core:
-    dependency: "direct main"
-    description:
-      name: firebase_core
-      sha256: c78132175edda4bc532a71e01a32964e4b4fcf53de7853a422d96dac3725f389
-      url: "https://pub.dev"
-    source: hosted
-    version: "2.15.1"
-  firebase_core_platform_interface:
-    dependency: transitive
-    description:
-      name: firebase_core_platform_interface
-      sha256: b63e3be6c96ef5c33bdec1aab23c91eb00696f6452f0519401d640938c94cba2
-      url: "https://pub.dev"
-    source: hosted
-    version: "4.8.0"
-  firebase_core_web:
-    dependency: transitive
-    description:
-      name: firebase_core_web
-      sha256: "4cf4d2161530332ddc3c562f19823fb897ff37a9a774090d28df99f47370e973"
-      url: "https://pub.dev"
-    source: hosted
-    version: "2.7.0"
   fixnum:
     dependency: transitive
     description:
@@ -477,14 +461,6 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "5.4.0"
-  plugin_platform_interface:
-    dependency: transitive
-    description:
-      name: plugin_platform_interface
-      sha256: da3fdfeccc4d4ff2da8f8c556704c08f912542c5fb3cf2233ed75372384a034d
-      url: "https://pub.dev"
-    source: hosted
-    version: "2.1.6"
   pool:
     dependency: transitive
     description:

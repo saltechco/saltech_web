@@ -3,7 +3,7 @@ import 'dart:js' as js;
 
 import 'package:animated_icon_button/animated_icon_button.dart';
 import 'package:dio/dio.dart';
-import 'package:firebase_core/firebase_core.dart';
+import 'package:dynamic_color/dynamic_color.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
@@ -16,7 +16,8 @@ import 'package:provider/provider.dart';
 import '/api/comment.dart';
 import '/generated/fonts.dart';
 import '/generated/logo.dart';
-import 'firebase_options.dart';
+import '/ui/color_schemes.g.dart';
+import '/ui/custom_color.g.dart';
 import 'models/Comments.dart';
 import 'models/Product.dart';
 
@@ -47,9 +48,10 @@ void init() {
 void main(List<String> args) async {
   usePathUrlStrategy();
   init();
+  /* For importing firebase
   await Firebase.initializeApp(
     options: DefaultFirebaseOptions.currentPlatform,
-  );
+  );*/
   var delegate = await LocalizationDelegate.create(
       fallbackLocale: 'en_US', supportedLocales: ['en_US', 'fa_IR']);
   runApp(LocalizedApp(delegate, MyApp()));
@@ -60,14 +62,15 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final lightTheme = ThemeData.light(useMaterial3: true).copyWith(
-      colorScheme: ColorScheme.fromSeed(
-          seedColor: Colors.lightBlue, brightness: Brightness.light),
-    );
-    final darkTheme = ThemeData.dark(useMaterial3: true).copyWith(
-      colorScheme: ColorScheme.fromSeed(
-          seedColor: Colors.lightBlue, brightness: Brightness.dark),
-    );
+    // Legacy Material Theme
+    // final lightTheme = ThemeData.light(useMaterial3: true).copyWith(
+    //   colorScheme: ColorScheme.fromSeed(
+    //       seedColor: Colors.lightBlue, brightness: Brightness.light),
+    // );
+    // final darkTheme = ThemeData.dark(useMaterial3: true).copyWith(
+    //   colorScheme: ColorScheme.fromSeed(
+    //       seedColor: Colors.lightBlue, brightness: Brightness.dark),
+    // );
 
     var localizationDelegate = LocalizedApp.of(context).delegate;
 
@@ -79,20 +82,51 @@ class MyApp extends StatelessWidget {
           initialData: true,
           stream: lightThemeControl.stream,
           builder: (context, snapshot) {
-            return MaterialApp(
-              routes: getRoutes(),
-              title: translate("title.name"),
-              theme: snapshot.data == true ? lightTheme : darkTheme,
-              debugShowCheckedModeBanner: false,
-              localizationsDelegates: [
-                GlobalMaterialLocalizations.delegate,
-                GlobalWidgetsLocalizations.delegate,
-                GlobalCupertinoLocalizations.delegate,
-                localizationDelegate
-              ],
-              supportedLocales: localizationDelegate.supportedLocales,
-              locale: localizationDelegate.currentLocale,
-              home: HomePage(),
+            return DynamicColorBuilder(
+              builder: (ColorScheme? lightDynamic, ColorScheme? darkDynamic) {
+                ColorScheme lightScheme;
+                ColorScheme darkScheme;
+
+                if (lightDynamic != null && darkDynamic != null) {
+                  lightScheme = lightDynamic.harmonized();
+                  lightCustomColors = lightCustomColors.harmonized(lightScheme);
+
+                  // Repeat for the dark color scheme.
+                  darkScheme = darkDynamic.harmonized();
+                  darkCustomColors = darkCustomColors.harmonized(darkScheme);
+                } else {
+                  // Otherwise, use fallback schemes.
+                  lightScheme = lightColorScheme;
+                  darkScheme = darkColorScheme;
+                }
+
+                return MaterialApp(
+                  routes: getRoutes(),
+                  title: translate("title.name"),
+                  theme: ThemeData(
+                    useMaterial3: true,
+                    colorScheme: lightScheme,
+                    extensions: [lightCustomColors],
+                  ),
+                  darkTheme: ThemeData(
+                    useMaterial3: true,
+                    colorScheme: darkScheme,
+                    extensions: [darkCustomColors],
+                  ),
+                  themeMode:
+                      snapshot.data == true ? ThemeMode.light : ThemeMode.dark,
+                  debugShowCheckedModeBanner: false,
+                  localizationsDelegates: [
+                    GlobalMaterialLocalizations.delegate,
+                    GlobalWidgetsLocalizations.delegate,
+                    GlobalCupertinoLocalizations.delegate,
+                    localizationDelegate
+                  ],
+                  supportedLocales: localizationDelegate.supportedLocales,
+                  locale: localizationDelegate.currentLocale,
+                  home: HomePage(),
+                );
+              },
             );
           },
         ),
